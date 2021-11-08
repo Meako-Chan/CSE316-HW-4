@@ -82,7 +82,13 @@ export default function AppBanner() {
     }
     
     function getAccountMenu(loggedIn) {
+        if(loggedIn === true){
+           console.log(auth.user.firstName[0] + auth.user.lastName[0]);
+           return auth.user.firstName[0] + auth.user.lastName[0];
+        }else{
         return <AccountCircle />;
+        }
+        
     }
 
     return (

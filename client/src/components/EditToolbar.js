@@ -48,6 +48,7 @@ function EditToolbar() {
                 variant="contained">
                     <CloseIcon />
             </Button>
+            
         </div>
     )
 }
