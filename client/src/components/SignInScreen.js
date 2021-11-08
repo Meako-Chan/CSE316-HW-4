@@ -15,7 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AuthContext from '../auth'; 
 import { GlobalStoreContext } from '../store'; 
 import { useContext } from 'react';
-
+import Alert from '@mui/material/Alert'; 
+import Modal from '@mui/material/Modal';
 function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -30,11 +31,26 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+  textAlign: 'center'
+};
 export default function SignInSide() {
   const { auth } = useContext(AuthContext); 
   const { store } = useContext(GlobalStoreContext); 
-
+  const [open, setOpen] = React.useState(false);
+  const [err, setErr] = React.useState("");
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleErrorMessage = (message) => setErr(message);
  
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,13 +61,31 @@ export default function SignInSide() {
       password: data.get('password'),
     });
     auth.loginUser({
-        email: data.get('email'),
-        password: data.get('password'),
-    }, store);
+          email: data.get('email'),
+          password: data.get('password'),
+      }, store).catch(function(err) {
+        console.log(err.response.data.errorMessage);
+        handleOpen();
+        handleErrorMessage(err.response.data.errorMessage);
+      
+      });
   };
 
   return (
     <ThemeProvider theme={theme}>
+      <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          >
+          <Box sx={style}>
+              <Alert severity="warning">{err}</Alert>
+              <Button
+              onClick={handleClose}
+              >Close</Button>
+          </Box>
+      </Modal>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
         <Grid
