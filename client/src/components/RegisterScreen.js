@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { useContext } from 'react';
 import AuthContext from '../auth'
 import Copyright from './Copyright'
@@ -12,10 +13,18 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { GlobalStoreContext } from '../store'
+import Alert from '@mui/material/Alert'; 
+import Modal from '@mui/material/Modal';
 
 export default function RegisterScreen() {
     const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext)
+
+    const [open, setOpen] = React.useState(false);
+  const [err, setErr] = React.useState("");
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleErrorMessage = (message) => setErr(message);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -26,11 +35,40 @@ export default function RegisterScreen() {
             email: formData.get('email'),
             password: formData.get('password'),
             passwordVerify: formData.get('passwordVerify')
-        }, store);
+        }, store).catch(function(err) {
+            console.log(err.response.data.errorMessage);
+            handleOpen();
+            handleErrorMessage(err.response.data.errorMessage);
+          
+          });
     };
-
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+        textAlign: 'center'
+      };
     return (
             <Container component="main" maxWidth="xs">
+                 <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          >
+          <Box sx={style}>
+              <Alert severity="warning">{err}</Alert>
+              <Button
+              onClick={handleClose}
+              >Close</Button>
+          </Box>
+      </Modal>
                 <CssBaseline />
                 <Box
                     sx={{
