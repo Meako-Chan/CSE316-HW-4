@@ -10,10 +10,15 @@ getLoggedIn = async (req, res) => {
             user: {
                 firstName: loggedInUser.firstName,
                 lastName: loggedInUser.lastName,
-                email: loggedInUser.email
+                email: loggedInUser.email,
+                id: loggedInUser._id
             }
         }).send();
     })
+}
+
+logoutUser = async(req, res) => {
+    localStorage.clear();
 }
 loginUser = async (req, res) => {
     try {
@@ -52,7 +57,8 @@ loginUser = async (req, res) => {
                 user: {
                     firstName: existingUser.firstName,
                     lastName: existingUser.lastName,
-                    email: existingUser.email
+                    email: existingUser.email,
+                    id: existingUser._id
                 }
             }).send();
         }
@@ -124,7 +130,8 @@ registerUser = async (req, res) => {
             user: {
                 firstName: savedUser.firstName,
                 lastName: savedUser.lastName,
-                email: savedUser.email
+                email: savedUser.email,
+                id: savedUser._id
             }
         }).send();
     } catch (err) {

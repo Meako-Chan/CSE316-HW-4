@@ -8,7 +8,9 @@ console.log("create AuthContext: " + AuthContext);
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR AUTH STATE THAT CAN BE PROCESSED
 export const AuthActionType = {
     GET_LOGGED_IN: "GET_LOGGED_IN",
-    REGISTER_USER: "REGISTER_USER"
+    REGISTER_USER: "REGISTER_USER",
+    LOGIN_USER: "LOGIN_USER",
+    LOGOUT_USER: "LOGOUT_USER"
 }
 
 function AuthContextProvider(props) {
@@ -45,6 +47,12 @@ function AuthContextProvider(props) {
                     loggedIn: payload.loggedIn
                 })
             }
+            case AuthActionType.LOGOUT_USER: {
+                return setAuth({
+                    user: null,
+                    loggedIn: false
+                })
+            }
             default:
                 return auth;
         }
@@ -61,6 +69,17 @@ function AuthContextProvider(props) {
                 }
             });
         }
+    }
+
+    auth.logoutUser = async function () {
+        // const response = await api.logoutUser();
+        // if (response.status === 200) {
+            authReducer({
+                type: AuthActionType.LOGOUT_USER,
+                payload:{}
+            })
+            localStorage.clear();
+        // }
     }
 
     auth.registerUser = async function(userData, store) {
