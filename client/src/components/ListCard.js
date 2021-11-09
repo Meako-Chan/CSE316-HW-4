@@ -1,4 +1,5 @@
 import { useContext, useState } from 'react'
+import * as React from 'react';
 import { GlobalStoreContext } from '../store'
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
@@ -6,6 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteModal from './DeleteModal';
 
 /*
     This is a card in our list of top 5 lists. It lets select
@@ -19,6 +21,7 @@ function ListCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair } = props;
+    
 
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
@@ -43,13 +46,24 @@ function ListCard(props) {
     async function handleDeleteList(event, id) {
         event.stopPropagation();
         store.markListForDeletion(id);
+        
+        
     }
 
     function handleKeyPress(event) {
+        
         if (event.code === "Enter") {
             let id = event.target.id.substring("list-".length);
+            console.log(event.target.defaultValue);
+            console.log(text);
+            if(text == ""){
+                text = " ";
+            }
+            if(event.target.defaultValue !== text){
             store.changeListName(id, text);
+            }
             toggleEdit();
+
         }
     }
     function handleUpdateText(event) {
@@ -84,6 +98,7 @@ function ListCard(props) {
                         <DeleteIcon style={{fontSize:'48pt'}} />
                     </IconButton>
                 </Box>
+                
         </ListItem>
 
     if (editActive) {

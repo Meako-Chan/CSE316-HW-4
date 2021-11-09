@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom'
 import api from '../api'
+import Statusbar from "../components/Statusbar";
 
 const AuthContext = createContext();
 console.log("create AuthContext: " + AuthContext);
@@ -79,6 +80,8 @@ function AuthContextProvider(props) {
                 payload:{}
             })
             localStorage.clear();
+            history.push("/");
+        
         // }
     }
 

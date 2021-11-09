@@ -230,7 +230,11 @@ function GlobalStoreContextProvider(props) {
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = async function () {
-        const response = await api.getTop5ListPairs();
+        console.log(auth.user.email);
+        let payload = {
+            email: auth.user.email
+        }
+        const response = await api.getTop5ListPairs(payload);
         if (response.data.success) {
             let pairsArray = response.data.idNamePairs;
             storeReducer({
@@ -249,6 +253,7 @@ function GlobalStoreContextProvider(props) {
     // showDeleteListModal, and hideDeleteListModal
     store.markListForDeletion = async function (id) {
         // GET THE LIST
+        console.log(id.AuthContext);
         let response = await api.getTop5ListById(id);
         if (response.data.success) {
             let top5List = response.data.top5List;
@@ -277,7 +282,7 @@ function GlobalStoreContextProvider(props) {
             payload: null
         });
     }
-
+    
     // THE FOLLOWING 8 FUNCTIONS ARE FOR COORDINATING THE UPDATING
     // OF A LIST, WHICH INCLUDES DEALING WITH THE TRANSACTION STACK. THE
     // FUNCTIONS ARE setCurrentList, addMoveItemTransaction, addUpdateItemTransaction,

@@ -20,6 +20,7 @@ getLoggedIn = async (req, res) => {
 logoutUser = async(req, res) => {
     localStorage.clear();
 }
+
 loginUser = async (req, res) => {
     try {
         const {email, password} = req.body;
@@ -39,10 +40,8 @@ loginUser = async (req, res) => {
         }
 
         const existingPass = existingUser.passwordHash;
-        console.log(existingPass);
 
         const passwordCompare = await bcrypt.compare(password, existingPass);
-        console.log(passwordCompare);
 
         if (passwordCompare){
             // LOGIN THE USER
