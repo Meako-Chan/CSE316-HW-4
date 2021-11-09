@@ -58,6 +58,7 @@ function Top5Item(props) {
             store.setIsItemEditActive();
         }
         setEditActive(newActive);
+        console.log(store.isItemEditActive);
     }
     function handleKeyPress(event) {
         if(event.code === "Enter") {

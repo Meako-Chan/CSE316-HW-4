@@ -56,9 +56,7 @@ function ListCard(props) {
             let id = event.target.id.substring("list-".length);
             console.log(event.target.defaultValue);
             console.log(text);
-            if(text == ""){
-                text = " ";
-            }
+           
             if(event.target.defaultValue !== text){
             store.changeListName(id, text);
             }
